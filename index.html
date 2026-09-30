@@ -1,24 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>CCTV Forensic Analyzer</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>CCTV Forensic Analyzer</h1>
+    <div class="header">
+        <h1>🔐 CCTV Forensic Analyzer</h1>
+        <p>Multi-Vendor DVR/NVR Forensic Analysis Tool</p>
+    </div>
 
-    <p>Multi-Vendor DVR/NVR Forensic Analysis Tool</p>
+    <div class="container">
 
-    <hr>
+        <div class="card">
+            <h2>📂 Evidence</h2>
 
-    <h2>Evidence</h2>
+            <p>
+                Import CCTV evidence for forensic analysis.
+            </p>
 
-    <input type="file" id="evidenceFile">
+            <input type="file" id="evidenceFile">
 
-    <p id="fileInfo">No evidence selected.</p>
+            <p id="fileInfo">
+                No evidence selected.
+            </p>
+        </div>
+
+    </div>
 
 </body>
 </html>

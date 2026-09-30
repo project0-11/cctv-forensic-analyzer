@@ -435,26 +435,31 @@ seekButton.addEventListener("click", function () {
 
     videoPlayer.currentTime = time;
 
-    videoPlayer.play();
+    videoPlayer.pause();
 
 });
 
 
 captureFrameButton.addEventListener("click", function () {
 
-    if (!videoPlayer.videoWidth) {
+    if (!videoPlayer.videoWidth || !videoPlayer.videoHeight) {
         alert("Please load a video first.");
         return;
     }
 
-    frameCanvas.width =
-        videoPlayer.videoWidth;
+    videoPlayer.pause();
 
-    frameCanvas.height =
-        videoPlayer.videoHeight;
+    frameCanvas.width = videoPlayer.videoWidth;
+    frameCanvas.height = videoPlayer.videoHeight;
 
-    const context =
-        frameCanvas.getContext("2d");
+    const context = frameCanvas.getContext("2d");
+
+    context.clearRect(
+        0,
+        0,
+        frameCanvas.width,
+        frameCanvas.height
+    );
 
     context.drawImage(
         videoPlayer,
@@ -473,6 +478,7 @@ captureFrameButton.addEventListener("click", function () {
 
 });
 
+    
 
 function formatTime(seconds) {
 

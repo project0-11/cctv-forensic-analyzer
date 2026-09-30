@@ -33,12 +33,17 @@
             <p id="fileInfo">
                 No evidence selected.
             </p>
+            <video id="videoPlayer"
+       controls
+       style="display:none; width:100%; margin-top:15px; border-radius:12px;">
+            </video>
         </div>
 
     </div>
 <script>
 const evidenceFile = document.getElementById("evidenceFile");
 const fileInfo = document.getElementById("fileInfo");
+    const videoPlayer = document.getElementById("videoPlayer");
 
 evidenceFile.addEventListener("change", function () {
 
@@ -46,6 +51,8 @@ evidenceFile.addEventListener("change", function () {
 
     if (!file) {
         fileInfo.textContent = "No evidence selected.";
+        videoPlayer.style.display = "none";
+    videoPlayer.removeAttribute("src");
         return;
     }
 
@@ -56,6 +63,10 @@ evidenceFile.addEventListener("change", function () {
         "📄 Name: " + file.name + "<br>" +
         "📦 Size: " + sizeMB + " MB<br>" +
         "🎞️ Type: " + (file.type || "Unknown");
+    if (file.type.startsWith("video/")) {
+    videoPlayer.src = URL.createObjectURL(file);
+    videoPlayer.style.display = "block";
+    }
 
 });
 </script>

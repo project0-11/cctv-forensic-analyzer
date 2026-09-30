@@ -37,7 +37,7 @@
        controls
        playsinline
        preload="metadata"
-       style="display:none; width:100%; margin-top:15px; border-radius:12px; background:#000;">
+       style="display:none; width:100%; height:240px; margin-top:15px; border-radius:12px; background:#000; object-fit:contain;">
             </video>
         </div>
 
@@ -66,10 +66,13 @@ evidenceFile.addEventListener("change", function () {
         "📦 Size: " + sizeMB + " MB<br>" +
         "🎞️ Type: " + (file.type || "Unknown");
     if (file.type.startsWith("video/")) {
-    videoPlayer.src = URL.createObjectURL(file);
-        videoPlayer.src = videoURL;
+
+    const videoURL = URL.createObjectURL(file);
+
     videoPlayer.style.display = "block";
-        videoPlayer.load();
+    videoPlayer.src = videoURL;
+    videoPlayer.load();
+
     }
 
 });

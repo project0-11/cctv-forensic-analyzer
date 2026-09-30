@@ -471,13 +471,50 @@ captureFrameButton.addEventListener("click", function () {
 
     frameCanvas.style.display = "block";
 
-    frameResult.innerHTML =
-        "<strong>📸 Frame Captured</strong><br>" +
-        "Time: " +
-        formatTime(videoPlayer.currentTime);
+    
 
 });
+frameResult.innerHTML =
+    "<strong>📸 Frame Captured</strong><br>" +
+    "Time: " +
+    formatTime(videoPlayer.currentTime) +
+    "<br><br>" +
+    "<button id='saveFrameButton' " +
+    "style='padding:12px 18px; border:0; border-radius:8px; cursor:pointer;'>" +
+    "⬇️ Save Evidence Frame" +
+    "</button>";
 
+const saveFrameButton =
+    document.getElementById("saveFrameButton");
+
+saveFrameButton.addEventListener("click", function () {
+
+    const imageURL =
+        frameCanvas.toDataURL("image/png");
+
+    const link =
+        document.createElement("a");
+
+    const caseNumber =
+        caseId.value || "CASE";
+
+    const evidenceNumber =
+        evidenceId.value || "EV";
+
+    const timestamp =
+        formatTime(videoPlayer.currentTime)
+        .replace(":", "-");
+
+    link.download =
+        caseNumber + "_" +
+        evidenceNumber + "_" +
+        timestamp +
+        ".png";
+
+    link.href = imageURL;
+
+    link.click();
+});
     
 
 function formatTime(seconds) {

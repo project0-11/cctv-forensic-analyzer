@@ -128,6 +128,56 @@
                 </div>
 
             </div>
+            <div id="analysisSection"
+     style="display:none; margin-top:20px;">
+
+    <h3>🎥 Video Analysis</h3>
+
+    <p>
+        <strong>Duration:</strong>
+        <span id="videoDuration">--</span>
+    </p>
+
+    <p>
+        <strong>Current Time:</strong>
+        <span id="currentTime">00:00</span>
+    </p>
+
+    <label>Go to time (seconds)</label>
+
+    <input
+        type="number"
+        id="seekTime"
+        min="0"
+        step="1"
+        placeholder="Example: 30"
+        style="width:100%; padding:12px; margin-top:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:8px;"
+    >
+
+    <button
+        id="seekButton"
+        style="padding:12px 18px; border:0; border-radius:8px; cursor:pointer;"
+    >
+        Go to Time
+    </button>
+
+    <button
+        id="captureFrameButton"
+        style="padding:12px 18px; margin-left:8px; border:0; border-radius:8px; cursor:pointer;"
+    >
+        📸 Capture Frame
+    </button>
+
+    <canvas
+        id="frameCanvas"
+        style="display:none; width:100%; margin-top:15px; border-radius:8px;">
+    </canvas>
+
+    <div id="frameResult"
+         style="margin-top:15px;">
+    </div>
+
+</div>
 
         </div>
 
@@ -135,7 +185,73 @@
 
 
     <script>
+        const caseId =
+    document.getElementById("caseId");
 
+const caseName =
+    document.getElementById("caseName");
+
+const investigator =
+    document.getElementById("investigator");
+
+const evidenceId =
+    document.getElementById("evidenceId");
+
+const vendor =
+    document.getElementById("vendor");
+        
+function saveCaseInformation() {
+
+    const caseData = {
+        caseId: caseId.value,
+        caseName: caseName.value,
+        investigator: investigator.value,
+        evidenceId: evidenceId.value,
+        vendor: vendor.value
+    };
+
+    localStorage.setItem(
+        "cctvCaseData",
+        JSON.stringify(caseData)
+    );
+}
+        [
+    caseId,
+    caseName,
+    investigator,
+    evidenceId,
+    vendor
+].forEach(input => {
+
+    input.addEventListener(
+        "input",
+        saveCaseInformation
+    );
+
+});
+        const savedCase =
+    localStorage.getItem("cctvCaseData");
+
+if (savedCase) {
+
+    const caseData =
+        JSON.parse(savedCase);
+
+    caseId.value =
+        caseData.caseId || "";
+
+    caseName.value =
+        caseData.caseName || "";
+
+    investigator.value =
+        caseData.investigator || "";
+
+    evidenceId.value =
+        caseData.evidenceId || "";
+
+    vendor.value =
+        caseData.vendor || "";
+}
         const evidenceFile =
             document.getElementById("evidenceFile");
 
@@ -258,7 +374,122 @@
                 }
 
             }
-        );
+            );
+            /* VIDEO ANALYSIS */
+
+const analysisSection =
+    document.getElementById("analysisSection");
+
+const videoDuration =
+    document.getElementById("videoDuration");
+
+const currentTime =
+    document.getElementById("currentTime");
+
+const seekTime =
+    document.getElementById("seekTime");
+
+const seekButton =
+    document.getElementById("seekButton");
+
+const captureFrameButton =
+    document.getElementById("captureFrameButton");
+
+const frameCanvas =
+    document.getElementById("frameCanvas");
+
+const frameResult =
+    document.getElementById("frameResult");
+
+
+videoPlayer.addEventListener("loadedmetadata", function () {
+
+    analysisSection.style.display = "block";
+
+    videoDuration.textContent =
+        formatTime(videoPlayer.duration);
+
+});
+
+
+videoPlayer.addEventListener("timeupdate", function () {
+
+    currentTime.textContent =
+        formatTime(videoPlayer.currentTime);
+
+});
+
+
+seekButton.addEventListener("click", function () {
+
+    const time = Number(seekTime.value);
+
+    if (
+        isNaN(time) ||
+        time < 0 ||
+        time > videoPlayer.duration
+    ) {
+        alert("Enter a valid time.");
+        return;
+    }
+
+    videoPlayer.currentTime = time;
+
+    videoPlayer.play();
+
+});
+
+
+captureFrameButton.addEventListener("click", function () {
+
+    if (!videoPlayer.videoWidth) {
+        alert("Please load a video first.");
+        return;
+    }
+
+    frameCanvas.width =
+        videoPlayer.videoWidth;
+
+    frameCanvas.height =
+        videoPlayer.videoHeight;
+
+    const context =
+        frameCanvas.getContext("2d");
+
+    context.drawImage(
+        videoPlayer,
+        0,
+        0,
+        frameCanvas.width,
+        frameCanvas.height
+    );
+
+    frameCanvas.style.display = "block";
+
+    frameResult.innerHTML =
+        "<strong>📸 Frame Captured</strong><br>" +
+        "Time: " +
+        formatTime(videoPlayer.currentTime);
+
+});
+
+
+function formatTime(seconds) {
+
+    if (!isFinite(seconds)) {
+        return "00:00";
+    }
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        Math.floor(seconds % 60);
+
+    return String(minutes).padStart(2, "0")
+        + ":" +
+        String(secs).padStart(2, "0");
+}
 
     </script>
 

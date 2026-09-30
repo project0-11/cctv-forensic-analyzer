@@ -36,6 +36,28 @@
         </div>
 
     </div>
+<script>
+const evidenceFile = document.getElementById("evidenceFile");
+const fileInfo = document.getElementById("fileInfo");
 
+evidenceFile.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+        fileInfo.textContent = "No evidence selected.";
+        return;
+    }
+
+    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+    fileInfo.innerHTML =
+        "<strong>Evidence Selected</strong><br><br>" +
+        "📄 Name: " + file.name + "<br>" +
+        "📦 Size: " + sizeMB + " MB<br>" +
+        "🎞️ Type: " + (file.type || "Unknown");
+
+});
+</script>
 </body>
 </html>

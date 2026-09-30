@@ -35,7 +35,9 @@
             </p>
             <video id="videoPlayer"
        controls
-       style="display:none; width:100%; margin-top:15px; border-radius:12px;">
+       playsinline
+       preload="metadata"
+       style="display:none; width:100%; margin-top:15px; border-radius:12px; background:#000;">
             </video>
         </div>
 
@@ -65,7 +67,9 @@ evidenceFile.addEventListener("change", function () {
         "🎞️ Type: " + (file.type || "Unknown");
     if (file.type.startsWith("video/")) {
     videoPlayer.src = URL.createObjectURL(file);
+        videoPlayer.src = videoURL;
     videoPlayer.style.display = "block";
+        videoPlayer.load();
     }
 
 });
